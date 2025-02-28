@@ -38,11 +38,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 26,
     borderRadius: 10,
-    // elevation: 4, // Shadow effect for Android
-    // shadowColor: "#000",
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 4,
+
     width: "90%",
     alignSelf: "center",
     marginTop: 80,

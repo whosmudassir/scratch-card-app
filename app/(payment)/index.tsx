@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { View, Text, ActivityIndicator, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTransaction } from "../../context/TransactionContext"; // Adjust path
+import { useTransaction } from "../../context/TransactionContext";
 import { styles } from "../../styles/paymentStyles";
 
 const PaymentScreen = () => {
