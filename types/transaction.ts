@@ -28,3 +28,9 @@ export interface ClaimReward {
   message: string;
   claimId: string;
 }
+
+export interface RewardCardProps {
+  width: number;
+  height: number;
+  rewardDetails: Reward;
+}
