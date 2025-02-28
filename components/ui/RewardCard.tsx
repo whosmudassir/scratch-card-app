@@ -1,11 +1,8 @@
+import { RewardCardProps } from "@/types/transaction";
 import { Group, Rect, useFont, Fill, Text } from "@shopify/react-native-skia";
 import React from "react";
 
-const RewardCard = ({
-  width,
-  height,
-  rewardDetails = { amount: 20, type: "CASHBACK", expiry: "12-12-45" },
-}: any) => {
+const RewardCard = ({ width, height, rewardDetails }: RewardCardProps) => {
   const getFont = (fontSize: number) => {
     return useFont(
       require("../../assets/fonts/SpaceMono-Regular.ttf"),
