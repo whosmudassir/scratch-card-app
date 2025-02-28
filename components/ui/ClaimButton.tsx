@@ -18,18 +18,18 @@ export default function ClaimButton({
   isLoading,
   error,
 }: ClaimButtonProps) {
-  const translateY = useRef(new Animated.Value(50)).current; // Start offscreen
-  const opacity = useRef(new Animated.Value(0)).current; // Start invisible
+  const translateY = useRef(new Animated.Value(50)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: 0, // Move into view
+        toValue: 0,
         duration: 500,
         useNativeDriver: true,
       }),
       Animated.timing(opacity, {
-        toValue: 1, // Fade in
+        toValue: 1,
         duration: 500,
         useNativeDriver: true,
       }),
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   disabledButton: {
-    backgroundColor: "#aaa", // Gray out when disabled
+    backgroundColor: "#aaa",
     opacity: 0.6,
   },
 });

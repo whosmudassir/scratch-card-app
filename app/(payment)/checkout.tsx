@@ -108,7 +108,6 @@ const PaymentSuccessScreen: React.FC = () => {
           rewardId.toString(),
           transaction.transactionId
         );
-        console.log("Reward Claim Response:", response);
 
         if (response?.status === "SUCCESS") {
           setClaimedRewards((prev) => new Set([...prev, rewardId]));

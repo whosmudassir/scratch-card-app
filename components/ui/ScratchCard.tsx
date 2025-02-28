@@ -79,12 +79,7 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
       cardArea.current += pathArea;
 
       const { width, height } = canvasLayout;
-      console.log(
-        ":::::::::::heeee 1::::",
-        // lastPath,
-        (cardArea.current / (width * height)) * 100,
-        60 * 100
-      );
+
       if ((cardArea.current / (width * height)) * 100 > 60 * 100) {
         setShowSuccessAnimation(true);
         onScratchComplete();
@@ -100,12 +95,7 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
       cardArea.current += pathArea;
 
       const { width, height } = canvasLayout;
-      console.log(
-        ":::::::::::heeee 2::::",
-        // lastPath,
-        (cardArea.current / (width * height)) * 100,
-        20 * 100
-      );
+
       if ((cardArea.current / (width * height)) * 100 > 20 * 100) {
         setShowSuccessAnimation(true);
         onScratchComplete();

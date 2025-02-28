@@ -20,12 +20,11 @@ export const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     alignSelf: "center",
-    // backgroundColor: "#007BFF",
+
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    zIndex: 10, // Ensures it's above the Canvas
-    // elevation: 5, // Adds shadow on Android
+    zIndex: 10,
   },
   buttonContainer: {
     position: "absolute",
@@ -35,8 +34,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    zIndex: 10, // Ensures it's above the Canvas
-    // elevation: 5, // Adds shadow on Android
+    zIndex: 10,
   },
   buttonText: {
     color: "white",
@@ -55,8 +53,7 @@ export const styles = StyleSheet.create({
     // width: 400,
     // height: 700,
     // zIndex: 11,
-    ...StyleSheet.absoluteFillObject, // Covers entire screen
-    // zIndex: 10, // Ensures it appears above everything
+    ...StyleSheet.absoluteFillObject,
   },
   errorText: {
     color: "red",
