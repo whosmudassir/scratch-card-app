@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState } from "react";
 import { getTransactionDetails } from "../api/mockAPI"; // Adjust path
 import { TransactionDetails } from "../types/transaction";
 
-// Define Context Type
 interface TransactionContextType {
   transaction: TransactionDetails | null;
   isTransactionLoading: boolean;
@@ -25,7 +24,6 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isTransactionLoading, setIsTransactionLoading] = useState(false);
   const [isTransactionError, setIsTransactionError] = useState(false);
 
-  // Fetch Transaction Function
   const fetchTransaction = async (transactionId: string) => {
     setIsTransactionLoading(true);
     setIsTransactionError(false);
@@ -57,7 +55,6 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// Custom Hook for Using Context
 export const useTransaction = () => {
   const context = useContext(TransactionContext);
   if (!context) {
