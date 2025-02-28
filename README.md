@@ -1,50 +1,130 @@
-# Welcome to your Expo app 👋
+# Setup Instructions
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+### Prerequisites
 
-## Get started
+Ensure you have the following installed:
 
-1. Install dependencies
+- Node.js (Latest LTS version recommended)
+- Expo CLI (`npm install -g expo-cli`)
+- Yarn or npm package manager
 
-   ```bash
-   npm install
-   ```
+### Installation
 
-2. Start the app
+1.  Clone the repository:
 
-   ```bash
-    npx expo start
-   ```
+    ```
+    git clone <repo-url>
+    cd <project-folder>
 
-In the output, you'll find options to open the app in a
+    ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+2.  Install dependencies:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+    ```
+    yarn install  # or npm install
 
-## Get a fresh project
+    ```
 
-When you're ready, run:
+3.  Start the Expo development server:
 
-```bash
-npm run reset-project
-```
+    ```
+    expo start
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+    ```
 
-## Learn more
+4.  Run the app on an emulator or physical device:
+    - For Android: Press `a` to open in an Android emulator.
+    - For iOS (Mac required): Press `i` to open in an iOS simulator.
+    - Scan the QR code in the Expo Go app on your mobile device.
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Dependencies List
 
-## Join the community
+### Core Libraries
 
-Join our community of developers creating universal apps.
+- **React Native** -- `react-native`
+- **Expo** -- `expo`
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### UI & Animation
+
+- **Gesture Handling** -- `react-native-gesture-handler`
+- **Scratch Card Component** -- Custom implementation + `@shopify/react-native-skia`
+- **Lottie Animations** -- `lottie-react-native`
+
+### State Management
+
+- **React Context API** -- for managing transaction state
+
+### API Calls
+
+- Mock APIs used for demo
+
+### TypeScript Support
+
+- **TypeScript** -- for static typing
+
+---
+
+# Features List
+
+**Checkout Screen**
+
+- Displays the total payment amount
+- Shows merchant details for the transaction
+- Provides a "Proceed Payment" button to confirm the transaction
+- Transitions users to the payment success screen upon successful payment
+
+**Payment Success Screen**
+
+- Displays payment confirmation message
+- Shows transaction amount and merchant details
+- Animates payment success feedback
+
+**Scratch Card Component**
+
+- Initially appears as an unscratched surface
+- Responds to touch gestures for scratching
+- Tracks scratch progress dynamically
+- Auto-reveals reward if 70% is scratched
+- Plays a celebration animation upon full reveal
+- Displays a "Claim Reward" button after scratching
+
+**Reward Claim Handling**
+
+- Users can claim the revealed reward
+- Prevents re-scratching of claimed rewards
+- Stores claimed rewards persistently
+
+**User Experience & Animation**
+
+- Smooth scratch interactions and animations
+- Handles partial scratching without abrupt reveals
+
+**Error Handling**
+
+- Handles failed payment scenarios with retry options
+- Displays error messages for API failures (e.g., failed transaction or reward fetch)
+- Prevents multiple reward claims for the same transaction
+- Claim failure flow with error message and retry option
+
+---
+
+# Assumptions Made
+
+- Flow of the app: The user views the payment details to be paid → Clicking on "Proceed Payment" takes the user to the payment success screen where rewards are listed → The user interacts with the scratch card component to reveal rewards → The user can claim the revealed reward.
+- A transaction can have one or more rewards.
+- Claimed, Unclaimed states of the already scratched rewards.
+- Claimed, Unclaimed rewards cannot be scratched again.
+
+---
+
+# Known Limitations
+
+- No backend integration for actual reward validation (uses mock APIs).
+- Not optimized for accessibility (e.g. screen reader support not implemented).
+- Does not include deep linking for reward claim redirection.
+
+---
+
+# Preview Screen Recording
