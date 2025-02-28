@@ -88,6 +88,12 @@ export const styles = StyleSheet.create({
     padding: 20,
     // backgroundColor: "#fff",
   },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 10,
+  },
   successText: {
     fontSize: 24,
     fontWeight: "bold",

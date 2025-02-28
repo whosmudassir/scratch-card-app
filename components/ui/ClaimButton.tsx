@@ -1,7 +1,23 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Pressable, Text, StyleSheet } from "react-native";
+import {
+  Animated,
+  Pressable,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 
-export default function ClaimButton({ onPress }) {
+interface ClaimButtonProps {
+  onPress: () => void;
+  isLoading: boolean;
+  error?: boolean;
+}
+
+export default function ClaimButton({
+  onPress,
+  isLoading,
+  error,
+}: ClaimButtonProps) {
   const translateY = useRef(new Animated.Value(50)).current; // Start offscreen
   const opacity = useRef(new Animated.Value(0)).current; // Start invisible
 
@@ -25,8 +41,15 @@ export default function ClaimButton({ onPress }) {
       style={[styles.buttonContainer, { opacity, transform: [{ translateY }] }]}
     >
       <Pressable onPress={onPress} style={styles.button}>
-        <Text style={styles.buttonText}>Claim Reward</Text>
+        {isLoading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text style={styles.buttonText}>Claim Reward</Text>
+        )}
       </Pressable>
+      {error && (
+        <Text style={styles.errorText}>Failed to claim, try again</Text>
+      )}
     </Animated.View>
   );
 }
@@ -48,5 +71,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    textAlign: "center",
+    marginTop: 6,
+  },
+  disabledButton: {
+    backgroundColor: "#aaa", // Gray out when disabled
+    opacity: 0.6,
   },
 });

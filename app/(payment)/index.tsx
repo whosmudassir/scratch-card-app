@@ -1,30 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { View, Text, ActivityIndicator, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getTransactionDetails } from "../../api/mockAPI";
+import { useTransaction } from "../../context/TransactionContext"; // Adjust path
 import { styles } from "../../styles/paymentStyles";
-import { TransactionDetails } from "@/types/transaction";
 
 const PaymentScreen = () => {
-  const [transaction, setTransaction] = useState<TransactionDetails | null>(
-    null
-  );
+  const {
+    transaction,
+    isTransactionLoading,
+    isTransactionError,
+    fetchTransaction,
+  } = useTransaction();
   const router = useRouter();
 
   useEffect(() => {
-    const fetchTransaction = async () => {
-      const details = await getTransactionDetails("txn_12345");
-      setTransaction(details);
-    };
-
-    fetchTransaction();
+    fetchTransaction("txn_12345");
   }, []);
 
-  if (!transaction) {
+  if (isTransactionLoading) {
     return (
       <SafeAreaView style={styles.container}>
         <ActivityIndicator size="large" color="#4CAF50" />
+      </SafeAreaView>
+    );
+  }
+
+  if (isTransactionError) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.errorText}>Failed to get transaction details.</Text>
+        <Pressable
+          style={styles.retryButton}
+          onPress={() => fetchTransaction("txn_12345")}
+        >
+          <Text style={styles.retryButtonText}>Try Again</Text>
+        </Pressable>
       </SafeAreaView>
     );
   }
@@ -34,10 +45,10 @@ const PaymentScreen = () => {
       <View style={styles.card}>
         <Text style={styles.title}>Amount to be Paid</Text>
         <Text style={styles.merchant}>
-          Merchant: {transaction.merchantName}
+          Merchant: {transaction?.merchantName}
         </Text>
-        <Text style={styles.amount}>Amount: ₹{transaction.amount}</Text>
-        <Text style={styles.timestamp}>Date: {transaction.timestamp}</Text>
+        <Text style={styles.amount}>Amount: ₹{transaction?.amount}</Text>
+        <Text style={styles.timestamp}>Date: {transaction?.timestamp}</Text>
         <Pressable
           style={styles.button}
           onPress={() => router.push("/checkout")}

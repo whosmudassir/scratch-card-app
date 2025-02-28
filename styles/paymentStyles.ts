@@ -58,4 +58,22 @@ export const styles = StyleSheet.create({
     color: "#FFF",
     fontWeight: "bold",
   },
+
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  retryButton: {
+    backgroundColor: "#FF5722",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  retryButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });

@@ -58,4 +58,10 @@ export const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject, // Covers entire screen
     // zIndex: 10, // Ensures it appears above everything
   },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    textAlign: "center",
+    marginTop: 6,
+  },
 });

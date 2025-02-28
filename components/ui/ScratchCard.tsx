@@ -14,6 +14,7 @@ import {
   Mask,
   Group,
   Rect,
+  SkPath,
 } from "@shopify/react-native-skia";
 import LottieView from "lottie-react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -42,9 +43,11 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
   selectedReward,
   claimedRewards,
   scratchedRewards,
+  claimingReward,
+  claimError,
 }) => {
   const [canvasLayout, setCanvasLayout] = useState({ width: 0, height: 0 });
-  const [paths, setPaths] = useState<Skia.SkPath[]>([]);
+  const [paths, setPaths] = useState<SkPath[]>([]);
   const cardArea = useRef<number>(0);
   const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
@@ -68,6 +71,24 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
         lastPath.lineTo(x, y);
         return [...prev];
       });
+      const lastPath = paths[paths.length - 1];
+      if (!lastPath) return;
+
+      const pathProperty = new svgPathProperties(lastPath.toSVGString());
+      const pathArea = pathProperty.getTotalLength() * 40;
+      cardArea.current += pathArea;
+
+      const { width, height } = canvasLayout;
+      console.log(
+        ":::::::::::heeee 1::::",
+        // lastPath,
+        (cardArea.current / (width * height)) * 100,
+        60 * 100
+      );
+      if ((cardArea.current / (width * height)) * 100 > 60 * 100) {
+        setShowSuccessAnimation(true);
+        onScratchComplete();
+      }
     })
     .onEnd(() => {
       if (paths.length === 0) return;
@@ -79,7 +100,13 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
       cardArea.current += pathArea;
 
       const { width, height } = canvasLayout;
-      if ((cardArea.current / (width * height)) * 100 > 70) {
+      console.log(
+        ":::::::::::heeee 2::::",
+        // lastPath,
+        (cardArea.current / (width * height)) * 100,
+        20 * 100
+      );
+      if ((cardArea.current / (width * height)) * 100 > 20 * 100) {
         setShowSuccessAnimation(true);
         onScratchComplete();
       }
@@ -146,14 +173,21 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
         </Canvas>
       </GestureDetector>
 
-      {isScratched &&
-        (isClaimed ? (
-          <Pressable style={styles.alreadyClaimedContainer}>
-            <RNText style={styles.alreadyClaimedText}>Claimed</RNText>
-          </Pressable>
-        ) : (
-          <ClaimButton onPress={onClaimComplete} />
-        ))}
+      {isScratched && (
+        <>
+          {isClaimed ? (
+            <Pressable style={styles.alreadyClaimedContainer}>
+              <RNText style={styles.alreadyClaimedText}>Claimed</RNText>
+            </Pressable>
+          ) : (
+            <ClaimButton
+              onPress={onClaimComplete}
+              isLoading={claimingReward}
+              error={claimError}
+            />
+          )}
+        </>
+      )}
 
       {showSuccessAnimation && (
         <LottieView
@@ -167,4 +201,4 @@ const ScratchCard: React.FC<ScratchCardProps> = ({
   );
 };
 
-export default ScratchCard;
+export default React.memo(ScratchCard);

@@ -17,6 +17,14 @@ export interface ScratchCardProps {
   onScratchComplete: () => void;
   onClaimComplete: () => void;
   selectedReward: Reward;
-  claimedRewards: number[];
-  scratchedRewards: number[];
+  claimedRewards: string[];
+  scratchedRewards: string[];
+  claimingReward: boolean;
+  claimError: boolean;
+}
+
+export interface ClaimReward {
+  status: string;
+  message: string;
+  claimId: string;
 }

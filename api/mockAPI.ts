@@ -1,4 +1,4 @@
-import { TransactionDetails } from "../types/transaction";
+import { ClaimReward, Reward, TransactionDetails } from "../types/transaction";
 
 export const getTransactionDetails = async (
   transactionId: string
@@ -6,7 +6,7 @@ export const getTransactionDetails = async (
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        transactionId,
+        transactionId: `${Date.now()}`,
         amount: 500,
         merchantName: "Amazon",
         timestamp: new Date().toLocaleDateString(),
@@ -16,7 +16,9 @@ export const getTransactionDetails = async (
   });
 };
 
-export const getRewardDetails = async (transactionId: string) => {
+export const getRewardDetails = async (
+  transactionId: string
+): Promise<Reward[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve([
@@ -49,7 +51,10 @@ export const getRewardDetails = async (transactionId: string) => {
   });
 };
 
-export const claimReward = async (rewardId: string, transactionId: string) => {
+export const claimReward = async (
+  rewardId: string,
+  transactionId: string
+): Promise<ClaimReward> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({

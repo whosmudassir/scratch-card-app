@@ -16,44 +16,51 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { getTransactionDetails, getRewardDetails } from "../../api/mockAPI";
+import { getRewardDetails, claimReward } from "../../api/mockAPI";
 import ScratchCard from "@/components/ui/ScratchCard";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import LottieView from "lottie-react-native";
 import { styles } from "../../styles/paymentSuccessStyles";
-import { TransactionDetails, Reward } from "../../types/transaction";
+import { Reward } from "../../types/transaction";
+import { useTransaction } from "../../context/TransactionContext";
 
 const PaymentSuccessScreen: React.FC = () => {
-  const [transaction, setTransaction] = useState<TransactionDetails | null>(
-    null
-  );
+  const { transaction, isTransactionLoading, isTransactionError } =
+    useTransaction();
+
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(true);
+  const [claimingReward, setClaimingReward] = useState<boolean>(false);
+  const [claimError, setClaimError] = useState<boolean>(false);
   const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
-  const [scratchedRewards, setScratchedRewards] = useState<Set<number>>(
+  const [scratchedRewards, setScratchedRewards] = useState<Set<string>>(
     new Set()
   );
-  const [claimedRewards, setClaimedRewards] = useState<Set<number>>(new Set());
+  const [claimedRewards, setClaimedRewards] = useState<Set<string>>(new Set());
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const translateYAnim = useRef(new Animated.Value(0)).current;
   const fadeInAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    if (!transaction || isTransactionError) return;
+
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const txnData = await getTransactionDetails("12345");
-        const rewardData = await getRewardDetails(txnData.transactionId);
-        setTransaction(txnData);
+        const rewardData: Reward[] = await getRewardDetails(
+          transaction.transactionId
+        );
         setRewards(rewardData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching rewards:", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, []);
+  }, [transaction, isTransactionError]);
 
   const handleAnimationFinish = useCallback(() => {
     Animated.sequence([
@@ -82,15 +89,41 @@ const PaymentSuccessScreen: React.FC = () => {
 
   const closeScratchCard = useCallback(() => {
     setSelectedReward(null);
+    setClaimError(false);
   }, []);
 
-  const handleScratchComplete = useCallback((rewardId: number) => {
+  const handleScratchComplete = useCallback((rewardId: string) => {
     setScratchedRewards((prev) => new Set(prev).add(rewardId));
   }, []);
 
-  const handleClaimComplete = useCallback((rewardId: number) => {
-    setClaimedRewards((prev) => new Set(prev).add(rewardId));
-  }, []);
+  const handleClaimComplete = useCallback(
+    async (rewardId: string) => {
+      if (!transaction) return;
+
+      setClaimError(false);
+      setClaimingReward(true);
+
+      try {
+        const response = await claimReward(
+          rewardId.toString(),
+          transaction.transactionId
+        );
+        console.log("Reward Claim Response:", response);
+
+        if (response?.status === "SUCCESS") {
+          setClaimedRewards((prev) => new Set([...prev, rewardId]));
+        } else {
+          setClaimError(true);
+        }
+      } catch (error) {
+        console.error("Error claiming reward:", error);
+        setClaimError(true);
+      } finally {
+        setClaimingReward(false);
+      }
+    },
+    [transaction]
+  );
 
   const renderRewards = useMemo(
     () => (
@@ -127,10 +160,18 @@ const PaymentSuccessScreen: React.FC = () => {
     [rewards, claimedRewards, scratchedRewards, handleSelectReward]
   );
 
-  if (loading) {
+  if (isTransactionLoading || loading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
+  }
+
+  if (isTransactionError || !transaction) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>Error loading transaction details.</Text>
       </View>
     );
   }
@@ -195,6 +236,8 @@ const PaymentSuccessScreen: React.FC = () => {
                   selectedReward={selectedReward}
                   claimedRewards={Array.from(claimedRewards)}
                   scratchedRewards={Array.from(scratchedRewards)}
+                  claimingReward={claimingReward}
+                  claimError={claimError}
                 />
               )}
             </Animated.View>
