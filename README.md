@@ -13,8 +13,8 @@ Ensure you have the following installed:
 1.  Clone the repository:
 
     ```
-    git clone <repo-url>
-    cd <project-folder>
+    git clone https://github.com/whosmudassir/scratch-card-app.git
+    cd scratch-card-app
 
     ```
 
